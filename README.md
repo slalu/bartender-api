@@ -1,6 +1,6 @@
 # bartender-api
 
-RESTful API to manage cocktails
+RESTful API to manage cocktails.
 
 Used to experiment with:
 - Kotlin
