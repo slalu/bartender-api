@@ -6,4 +6,12 @@ class CocktailsByIdSpecification(val id: Int) : ExposedSpecification<Cocktail> {
     override fun retrieve(): Cocktail {
         return Cocktail[id]
     }
+
+    override fun equals(other: Any?): Boolean {
+        return if (other is CocktailsByIdSpecification) this.id == other.id else super.equals(other)
+    }
+
+    override fun hashCode(): Int {
+        return super.hashCode()
+    }
 }
