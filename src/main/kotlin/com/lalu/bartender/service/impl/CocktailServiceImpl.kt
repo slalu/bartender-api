@@ -12,8 +12,13 @@ class CocktailServiceImpl() : CocktailService {
 
     @Autowired
     private lateinit var cocktailRepository: Repository<Cocktail>
-    
+
     override fun findById(id: Int): Cocktail {
-        return cocktailRepository.query(CocktailsByIdSpecification(id)).toList().single()
+        return cocktailRepository.query(CocktailsByIdSpecification(id)).single()
+    }
+
+    override fun save(cocktail: Cocktail): Cocktail {
+        cocktailRepository.add(cocktail)
+        return cocktail
     }
 }

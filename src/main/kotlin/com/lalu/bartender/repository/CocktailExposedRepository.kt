@@ -55,6 +55,8 @@ class CocktailExposedRepository : Repository<Cocktail> {
 
     override fun query(specification: Specification): List<Cocktail> {
         val exposedSpecification = specification as ExposedSpecification<com.lalu.bartender.domain.dto.Cocktail>
-        return listOf(CocktailMapper.map(exposedSpecification.retrieve()))
+        return transaction {
+            listOf(CocktailMapper.map(exposedSpecification.retrieve()))
+        }
     }
 }

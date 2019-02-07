@@ -33,4 +33,6 @@ class CocktailServiceImplTest {
         assertThat(resultCocktail).isNotNull
         assertThat(resultCocktail.title).isEqualTo("Gin")
     }
+
+    //TODO Test exception
 }

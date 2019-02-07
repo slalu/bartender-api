@@ -13,4 +13,6 @@ class CocktailServiceManager {
     fun findById(id: Int) : Cocktail {
         return cocktailService.findById(id)
     }
+
+    fun save(cocktail: Cocktail) : Cocktail = cocktailService.save(cocktail)
 }
