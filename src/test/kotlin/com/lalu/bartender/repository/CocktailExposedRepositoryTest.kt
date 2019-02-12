@@ -3,8 +3,8 @@ package com.lalu.bartender.repository
 import com.lalu.bartender.domain.Cocktail
 import com.lalu.bartender.domain.mapper.CocktailMapper
 import com.lalu.bartender.repository.specification.CocktailsByIdSpecification
-import org.assertj.core.api.Assertions.assertThat
 import org.jetbrains.exposed.sql.transactions.transaction
+
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
 import java.math.BigDecimal
+import org.assertj.core.api.Assertions.assertThat
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
@@ -24,7 +25,6 @@ class CocktailExposedRepositoryTest {
     @Test
     fun shouldAddCocktail() {
         val cocktail = com.lalu.bartender.domain.Cocktail(
-                id = 2,
                 title = "Gin Mule",
                 preparation = "Put the ingredient in the glass and drink",
                 ingredients = listOf(com.lalu.bartender.domain.CocktailIngredient(
