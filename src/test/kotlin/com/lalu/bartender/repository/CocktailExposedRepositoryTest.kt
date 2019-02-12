@@ -25,6 +25,7 @@ class CocktailExposedRepositoryTest {
     @Test
     fun shouldAddCocktail() {
         val cocktail = com.lalu.bartender.domain.Cocktail(
+                id = 2,
                 title = "Gin Mule",
                 preparation = "Put the ingredient in the glass and drink",
                 ingredients = listOf(com.lalu.bartender.domain.CocktailIngredient(

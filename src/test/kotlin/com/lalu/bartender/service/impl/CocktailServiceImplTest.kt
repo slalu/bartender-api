@@ -1,6 +1,7 @@
 package com.lalu.bartender.service.impl
 
 import com.lalu.bartender.domain.Cocktail
+import com.lalu.bartender.exceptions.CocktailNotFoundException
 import com.lalu.bartender.repository.Repository
 import com.lalu.bartender.repository.specification.CocktailsByIdSpecification
 import org.assertj.core.api.Assertions.assertThat
