@@ -1,6 +1,7 @@
 package com.lalu.bartender.service.impl
 
 import com.lalu.bartender.domain.Cocktail
+import com.lalu.bartender.exceptions.CocktailNotFoundException
 import com.lalu.bartender.repository.Repository
 import com.lalu.bartender.repository.specification.CocktailsByIdSpecification
 import com.lalu.bartender.service.CocktailService
@@ -14,7 +15,11 @@ class CocktailServiceImpl() : CocktailService {
     private lateinit var cocktailRepository: Repository<Cocktail>
 
     override fun findById(id: Int): Cocktail {
-        return cocktailRepository.query(CocktailsByIdSpecification(id)).single()
+        try {
+            return cocktailRepository.query(CocktailsByIdSpecification(id)).single()
+        } catch (e: NoSuchElementException) {
+            throw CocktailNotFoundException("Cocktail not found")
+        }
     }
 
     override fun save(cocktail: Cocktail): Cocktail {

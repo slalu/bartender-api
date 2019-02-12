@@ -1,6 +1,7 @@
 package com.lalu.bartender.controller
 
 import com.lalu.bartender.domain.Cocktail
+import com.lalu.bartender.exceptions.CocktailNotFoundException
 import com.lalu.bartender.service.CocktailServiceManager
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -39,5 +40,15 @@ class CocktailControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.title").value("Gin"))
 
+    }
+
+    @Test
+    fun shouldFailWhenGetCocktailByIdDoesNotExist() {
+        given(cocktailServiceManager.findById(1)).willThrow(CocktailNotFoundException("Cocktail not found"))
+
+        mockMvc.perform(get("/cocktails/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andDo(print())
+                .andExpect(status().isNotFound)
     }
 }

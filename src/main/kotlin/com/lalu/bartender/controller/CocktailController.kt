@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/cocktails")
 class CocktailController(var cocktailServiceManager: CocktailServiceManager) {
-    
+
     @GetMapping("/{id}")
     fun findById(@PathVariable(value = "id") id: Int): Cocktail {
         return cocktailServiceManager.findById(id)
@@ -16,7 +16,7 @@ class CocktailController(var cocktailServiceManager: CocktailServiceManager) {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun save(@RequestBody cocktail: Cocktail) : Cocktail {
+    fun save(@RequestBody cocktail: Cocktail): Cocktail {
         return cocktailServiceManager.save(cocktail)
     }
 

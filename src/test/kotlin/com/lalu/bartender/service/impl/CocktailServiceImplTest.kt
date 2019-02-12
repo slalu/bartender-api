@@ -1,6 +1,7 @@
 package com.lalu.bartender.service.impl
 
 import com.lalu.bartender.domain.Cocktail
+import com.lalu.bartender.exceptions.CocktailNotFoundException
 import com.lalu.bartender.repository.Repository
 import com.lalu.bartender.repository.specification.CocktailsByIdSpecification
 import org.assertj.core.api.Assertions.assertThat
@@ -21,8 +22,7 @@ class CocktailServiceImplTest {
 
     @Test
     fun shouldGetCocktailById() {
-        print(CocktailsByIdSpecification(1) == CocktailsByIdSpecification(1))
-        val cocktail = Cocktail(1, "Gin", emptyList(),"")
+        val cocktail = Cocktail(1, "Gin", emptyList(), "")
 
         Mockito.`when`(cocktailRepository.query(CocktailsByIdSpecification(1))).thenReturn(listOf(cocktail))
 
@@ -34,5 +34,12 @@ class CocktailServiceImplTest {
         assertThat(resultCocktail.title).isEqualTo("Gin")
     }
 
-    //TODO Test exception
+    @Test(expected = CocktailNotFoundException::class)
+    fun shouldFailWhenGetCocktailByIdDoesntExist() {
+        Mockito.`when`(cocktailRepository.query(CocktailsByIdSpecification(1))).thenReturn(emptyList())
+
+        val resultCocktail = cocktailService.findById(1)
+
+        Mockito.verify(cocktailRepository).query(CocktailsByIdSpecification(1))
+    }
 }

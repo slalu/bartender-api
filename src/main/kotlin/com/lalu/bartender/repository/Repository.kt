@@ -1,7 +1,6 @@
 package com.lalu.bartender.repository
 
 import com.lalu.bartender.repository.specification.Specification
-import org.springframework.stereotype.Component
 
 public interface Repository<T> {
     fun add(item: T)
