@@ -35,11 +35,19 @@ class CocktailServiceImplTest {
     }
 
     @Test(expected = CocktailNotFoundException::class)
-    fun shouldFailWhenGetCocktailByIdDoesntExist() {
+    fun shouldFailWhenGetCocktailByIdDoesNotExist() {
         Mockito.`when`(cocktailRepository.query(CocktailsByIdSpecification(1))).thenReturn(emptyList())
 
-        val resultCocktail = cocktailService.findById(1)
+        cocktailService.findById(1)
 
         Mockito.verify(cocktailRepository).query(CocktailsByIdSpecification(1))
+    }
+
+    @Test
+    fun shouldSaveCocktail() {
+        val cocktail = Cocktail(1, "Gin", emptyList(), "")
+
+        cocktailService.save(cocktail)
+        Mockito.verify(cocktailRepository).add(cocktail)
     }
 }

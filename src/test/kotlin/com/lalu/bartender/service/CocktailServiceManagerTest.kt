@@ -30,4 +30,15 @@ class CocktailServiceManagerTest {
         Assertions.assertThat(resultCocktail).isNotNull
         Assertions.assertThat(resultCocktail.title).isEqualTo("Gin")
     }
+
+    @Test
+    fun shouldSaveCocktail() {
+        val cocktail = Cocktail(1, "Gin", emptyList(), "")
+
+        `when`(cocktailService.save(cocktail)).thenReturn(cocktail)
+
+        cocktailServiceManager.save(cocktail)
+
+        Mockito.verify(cocktailService).save(cocktail)
+    }
 }

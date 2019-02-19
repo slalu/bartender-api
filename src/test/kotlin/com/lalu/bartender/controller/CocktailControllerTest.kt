@@ -1,5 +1,7 @@
 package com.lalu.bartender.controller
 
+import com.fasterxml.jackson.core.JsonProcessingException
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.lalu.bartender.domain.Cocktail
 import com.lalu.bartender.exceptions.CocktailNotFoundException
 import com.lalu.bartender.service.CocktailServiceManager
@@ -14,6 +16,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
@@ -26,7 +29,7 @@ class CocktailControllerTest {
 
     @MockBean
     private lateinit var cocktailServiceManager: CocktailServiceManager
-
+    
     @Test
     fun shouldGetCocktailById() {
         val cocktail = Cocktail(1, "Gin", emptyList(),"")
@@ -50,5 +53,27 @@ class CocktailControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andDo(print())
                 .andExpect(status().isNotFound)
+    }
+
+    @Test
+    fun shouldSaveCocktail() {
+        val cocktail = Cocktail(1, "Gin", emptyList(),"")
+
+        given(cocktailServiceManager.save(cocktail)).willReturn(cocktail)
+
+        mockMvc.perform(post("/cocktails")
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .content(serializeToJson(cocktail)))
+                .andDo(print())
+                .andExpect(status().isCreated)
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.title").value("Gin"))
+
+    }
+
+    @Throws(JsonProcessingException::class)
+    fun serializeToJson(request: Any): String {
+        val objectMapper = ObjectMapper()
+        return objectMapper.writeValueAsString(request)
     }
 }
