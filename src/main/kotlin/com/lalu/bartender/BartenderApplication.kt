@@ -11,7 +11,7 @@ class BartenderServiceApplication
 //Exposed - Kotlin SQL Library: https://github.com/JetBrains/Exposed
 //Useful example: https://stackoverflow.com/questions/50339016/kotlin-exposed-dsl-query-mapping
 
-//Cocktail creation example
+//Cocktails creation example
 //val repository = CocktailExposedRepository()
 /*init {
     repository.add(com.lalu.bartender.domain.Cocktail(
