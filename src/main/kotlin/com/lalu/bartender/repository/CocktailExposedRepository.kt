@@ -1,13 +1,12 @@
 package com.lalu.bartender.repository
 
 import com.lalu.bartender.domain.Cocktail
+import com.lalu.bartender.domain.entity.CocktailIngredients.cocktail
 import com.lalu.bartender.domain.mapper.CocktailMapper
+import com.lalu.bartender.repository.specification.CocktailsByIdSpecification
 import com.lalu.bartender.repository.specification.ExposedSpecification
 import com.lalu.bartender.repository.specification.Specification
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.StdOutSqlLogger
-import org.jetbrains.exposed.sql.addLogger
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.stereotype.Component
@@ -46,7 +45,13 @@ class CocktailExposedRepository : Repository<Cocktail> {
     }
 
     override fun remove(item: Cocktail) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        transaction {
+            addLogger(StdOutSqlLogger)
+
+            val specification = CocktailsByIdSpecification(item.id)
+            val cocktail = specification.retrieve()
+            cocktail?.delete()
+        }
     }
 
     override fun remove(items: Iterable<Cocktail>) {
@@ -56,7 +61,8 @@ class CocktailExposedRepository : Repository<Cocktail> {
     override fun query(specification: Specification): List<Cocktail> {
         val exposedSpecification = specification as ExposedSpecification<com.lalu.bartender.domain.dto.Cocktail>
         return transaction {
-            listOf(CocktailMapper.map(exposedSpecification.retrieve()))
+            val cocktail = exposedSpecification.retrieve()
+            if(cocktail != null) listOf(CocktailMapper.map(cocktail)) else emptyList()
         }
     }
 }

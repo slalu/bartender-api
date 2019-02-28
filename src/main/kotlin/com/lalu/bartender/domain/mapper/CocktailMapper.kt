@@ -21,10 +21,6 @@ class CocktailMapper {
 
             CocktailIngredientMapper.map(cocktail.ingredients, resultCocktail)
 
-            /*transaction {
-                resultCocktail.cocktailIngredients = SizedCollection(ingredients)
-            }    */
-
             return resultCocktail
         }
     }

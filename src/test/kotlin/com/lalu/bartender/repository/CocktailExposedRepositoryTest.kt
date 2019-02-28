@@ -3,6 +3,7 @@ package com.lalu.bartender.repository
 import com.lalu.bartender.domain.Cocktail
 import com.lalu.bartender.domain.mapper.CocktailMapper
 import com.lalu.bartender.repository.specification.CocktailsByIdSpecification
+import com.lalu.bartender.repository.specification.CocktailsByTitleSpecification
 import org.jetbrains.exposed.sql.transactions.transaction
 
 import org.junit.Test
@@ -25,7 +26,6 @@ class CocktailExposedRepositoryTest {
     @Test
     fun shouldAddCocktail() {
         val cocktail = com.lalu.bartender.domain.Cocktail(
-                id = 2,
                 title = "Gin Mule",
                 preparation = "Put the ingredient in the glass and drink",
                 ingredients = listOf(com.lalu.bartender.domain.CocktailIngredient(
@@ -36,7 +36,7 @@ class CocktailExposedRepositoryTest {
         repository.add(cocktail)
 
         val queriedCocktail = transaction {
-            CocktailMapper.map(CocktailsByIdSpecification(cocktail.id).retrieve())
+            CocktailMapper.map(repository.query(CocktailsByTitleSpecification(cocktail.title)).first())
         }
 
         assertThat(queriedCocktail.id).isNotNull()
@@ -59,5 +59,23 @@ class CocktailExposedRepositoryTest {
 
         val foundCocktail = repository.query(CocktailsByIdSpecification(persistedCocktail.id.value)).single()
         assertThat(foundCocktail.title).isEqualTo(persistedCocktail.title)
+    }
+
+    @Test
+    fun shouldRemoveCocktail() {
+        val cocktail = com.lalu.bartender.domain.Cocktail(
+                id = 2,
+                title = "Gin Mule",
+                preparation = "Put the ingredient in the glass and drink",
+                ingredients = listOf(com.lalu.bartender.domain.CocktailIngredient(
+                        ingredient = com.lalu.bartender.domain.Ingredient("Gin"),
+                        measurement = com.lalu.bartender.domain.Measurement(BigDecimal(3.00), "oz")
+                )))
+
+        repository.add(cocktail)
+        repository.remove(cocktail)
+
+        val foundCocktails = repository.query(CocktailsByIdSpecification(cocktail.id))
+        assertThat(foundCocktails).isEmpty()
     }
 }
