@@ -44,25 +44,19 @@ class CocktailExposedRepository : Repository<Cocktail> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun remove(item: Cocktail) {
+    override fun remove(specification: Specification) {
+        val exposedSpecification = specification as ExposedSpecification<com.lalu.bartender.domain.dto.Cocktail>
         transaction {
             addLogger(StdOutSqlLogger)
 
-            val specification = CocktailsByIdSpecification(item.id)
-            val cocktail = specification.retrieve()
-            cocktail?.delete()
+            exposedSpecification.retrieve().forEach { it.delete() }
         }
-    }
-
-    override fun remove(items: Iterable<Cocktail>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun query(specification: Specification): List<Cocktail> {
         val exposedSpecification = specification as ExposedSpecification<com.lalu.bartender.domain.dto.Cocktail>
         return transaction {
-            val cocktail = exposedSpecification.retrieve()
-            if(cocktail != null) listOf(CocktailMapper.map(cocktail)) else emptyList()
+            CocktailMapper.map(exposedSpecification.retrieve())
         }
     }
 }

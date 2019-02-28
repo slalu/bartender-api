@@ -73,7 +73,7 @@ class CocktailExposedRepositoryTest {
                 )))
 
         repository.add(cocktail)
-        repository.remove(cocktail)
+        repository.remove(CocktailsByIdSpecification(cocktail.id))
 
         val foundCocktails = repository.query(CocktailsByIdSpecification(cocktail.id))
         assertThat(foundCocktails).isEmpty()

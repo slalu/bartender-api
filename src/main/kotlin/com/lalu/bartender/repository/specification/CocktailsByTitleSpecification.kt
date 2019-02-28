@@ -4,8 +4,8 @@ import com.lalu.bartender.domain.dto.Cocktail
 import com.lalu.bartender.domain.entity.Cocktails
 
 class CocktailsByTitleSpecification(val title: String) : ExposedSpecification<Cocktail> {
-    override fun retrieve(): Cocktail? {
-        return Cocktail.find { Cocktails.title eq title }.firstOrNull()
+    override fun retrieve(): List<Cocktail> {
+        return Cocktail.find { Cocktails.title eq title }.toList()
     }
 
     override fun equals(other: Any?): Boolean {

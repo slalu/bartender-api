@@ -12,7 +12,20 @@ class CocktailMapper {
                     ingredients = CocktailIngredientMapper.map(cocktail.cocktailIngredients)
             )
         }
-        
+
+        fun map(cocktails: List<com.lalu.bartender.domain.dto.Cocktail>): List<Cocktail> {
+            val resultCocktails = ArrayList<Cocktail>()
+            cocktails.forEach {
+                resultCocktails.add(Cocktail(
+                        id = it.id.value,
+                        title = it.title,
+                        preparation = it.preparation,
+                        ingredients = CocktailIngredientMapper.map(it.cocktailIngredients)
+                ))
+            }
+            return resultCocktails
+        }
+
         fun map(cocktail: Cocktail): com.lalu.bartender.domain.dto.Cocktail {
             val resultCocktail = com.lalu.bartender.domain.dto.Cocktail.new {
                 title = cocktail.title
